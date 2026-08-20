@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cotizador Transporte Colombia</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #f5f7fa; --card-bg: #ffffff; --text: #1e293b; --text-mute: #64748b;
+  --border: #e2e8f0; --input-bg: #f8fafc; --accent: #1a5fb4; --accent2: #3584e4;
+  --accent-grad: linear-gradient(135deg, #0f2942 0%, #1a5fb4 55%, #3584e4 100%);
+}
+body.dark {
+  --bg: #0b0f17; --card-bg: #131a26; --text: #e9edf3; --text-mute: #8b98ab;
+  --border: #232c3d; --input-bg: #0f1620; --accent: #4d9bff; --accent2: #74b3ff;
+  --accent-grad: linear-gradient(135deg, #0b1220 0%, #123157 55%, #1a5fb4 100%);
+}
+body { font-family: -apple-system, sans-serif; background: var(--bg); min-height: 100vh; }
+.app-container { max-width: 480px; margin: 0 auto; padding-bottom: 40px; }
+.app-header { background: var(--accent-grad); color: white; padding: 28px 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
+.nav-bar { display: flex; overflow-x: auto; background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 6px 4px; position: sticky; top: 78px; z-index: 99; }
+.nav-btn { flex: 1; min-width: 70px; padding: 10px 4px; border: none; background: transparent; color: var(--text-mute); font-size: 11px; font-weight: 600; cursor: pointer; }
+.nav-btn.active { background: var(--accent); color: white; border-radius: 10px; }
+.app-main { padding: 12px; }
+.card { background: var(--card-bg); border-radius: 16px; padding: 18px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.form-group { display: flex; flex-direction: column; margin-bottom: 10px; }
+.input { padding: 12px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 15px; background: var(--input-bg); color: var(--text); width: 100%; }
+.btn-primary { width: 100%; padding: 16px; background: var(--accent-grad); color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.btn-secondary { padding: 10px; background: var(--input-bg); color: var(--accent); border: 1.5px solid var(--accent); border-radius: 10px; font-size: 13px; font-weight: 600; }
+.cost-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed var(--border); }
+.quote-box { background: var(--accent-grad); color: white; padding: 20px; text-align: center; border-radius: 12px; }
+.pdf-preview { background: white; padding: 20px; border: 1px solid #e2e8f0; }
+.hint { font-size: 11px; color: var(--text-mute); margin-top: 4px; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(function() {
+"use strict";
+
+const CIUDADES = ["Barranquilla","Cartagena","Santa Marta","Sabanagrande","Baranoa","Puerto Colombia","Ciénaga","Valledupar","Sincelejo","Montería","Riohacha","Bosconia","Maicao","Palomino","Bogotá","Medellín","Cali"];
+
+const DISTANCIAS = {
+"Barranquilla": {"Cartagena":120,"Santa Marta":105,"Sabanagrande":25,"Baranoa":22,"Puerto Colombia":15,"Valledupar":300,"Sincelejo":220,"Montería":350},
+"Cartagena": {"Barranquilla":120,"Santa Marta":225,"Sincelejo":190},
+"Santa Marta": {"Barranquilla":105,"Cartagena":225,"Riohacha":170}
+};// --- CONFIGURACIÓN ---
+let VEHICULO = JSON.parse(localStorage.getItem('cot_vehiculo')) || {
+    marca: "Renault", modelo: "Duster Iconic", placa: "NWX964", nombre: "Geovanny Solar Niño", costoLlenarGas: 39000, precioGasolinaGalon: 16000
+};
+
+let lugaresGuardados = JSON.parse(localStorage.getItem('solar_lugares')) || [];
+let rutasManuales = JSON.parse(localStorage.getItem('solar_rutas')) || [];
+let kilometraje = JSON.parse(localStorage.getItem('cot_km')) || [];
+
+const formatCOP = (v) => new Intl.NumberFormat('es-CO', {style:'currency', currency:'COP', minimumFractionDigits:0}).format(v);
+
+// --- VISTAS ---
+let currentView = 'dashboard';
+let currentQuote = null;
+
+function renderApp() {
+    const main = document.getElementById('app');
+    let content = '';
+    if(currentView === 'dashboard') content = renderDashboard();
+    else if(currentView === 'cotizar') content = renderCotizar();
+    
+    main.innerHTML = `<div class="app-container"><header class="app-header"><h1>SOLAR VIP</h1><p>${VEHICULO.marca} ${VEHICULO.placa}</p></header><nav class="nav-bar"><button class="nav-btn ${currentView==='dashboard'?'active':''}" onclick="switchView('dashboard')">📊 Inicio</button><button class="nav-btn ${currentView==='cotizar'?'active':''}" onclick="switchView('cotizar')">📋 Cotizar</button></nav><main class="app-main">${content}</main></div>`;
+}
+
+function renderDashboard() {
+    const hoy = new Date().toLocaleDateString('es-CO');
+    const reg = kilometraje.find(k => k.fecha === hoy);
+    let html = '<div class="card"><h2>🚗 Kilometraje Diario</h2>';
+    if(!reg) {
+        html += '<div class="form-group"><label>Km Inicial</label><input type="number" id="kmIn" class="input"></div><button class="btn-primary" onclick="iniciarDia()">🟢 Iniciar Jornada</button>';
+    } else if(reg.kmFinal === null) {
+        html += `<p>Km Inicial: ${reg.kmIn} km</p><div class="form-group"><label>Km Final</label><input type="number" id="kmFi" class="input"></div><button class="btn-primary" style="background:red" onclick="cerrarDia()">🔴 Cerrar Jornada</button>`;
+    } else {
+        html += `<div class="cost-row"><span>Recorrido hoy:</span><span>${reg.kmFi - reg.kmIn} km</span></div><p class="hint">✅ Jornada cerrada</p>`;
+    }
+    return html + '</div>';
+}
+
+function renderCotizar() {
+    return `<div class="card"><h2>📋 Nueva Cotización</h2><div class="form-group"><label>Modalidad</label><select id="mod" class="input" onchange="cambiarMod()"><option value="solo_ida">Solo ida</option><option value="ida_vuelta">Ida y vuelta</option><option value="por_hora">Por hora</option></select></div><div id="camposRuta"><div class="form-group"><label>Origen</label><select id="orig" class="input">${CIUDADES.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div><div class="form-group"><label>Destino</label><select id="dest" class="input">${CIUDADES.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div><div class="form-group"><label>Dirección</label><input type="text" id="dir" class="input"></div></div><div class="form-group"><label>Valor</label><input type="number" id="val" class="input"></div><div class="form-group"><label>Cliente</label><input type="text" id="cli" class="input"></div><button class="btn-primary" onclick="cotizar()">🧮 Generar</button><div id="res"></div></div>`;
+}
+
+function cambiarMod() {
+    const m = document.getElementById('mod').value;
+    document.getElementById('camposRuta').style.display = (m === 'por_hora') ? 'none' : 'block';
+}
+
+function cotizar() {
+    const val = document.getElementById('val').value;
+    if(!val) return alert("Ingresa el valor");
+    currentQuote = { valor: val, cliente: document.getElementById('cli').value || 'Cliente', fecha: new Date().toLocaleDateString() };
+    document.getElementById('res').innerHTML = `<div class="quote-box"><h3>Total: ${formatCOP(val)}</h3><button class="btn-primary" onclick="pdf()">📄 Descargar PDF</button></div>`;
+}
+
+function pdf() {
+    const doc = new jspdf.jsPDF();
+    doc.text("COTIZACION SOLAR VIP", 20, 20);
+    doc.text(`Cliente: ${currentQuote.cliente}`, 20, 40);
+    doc.text(`Valor: ${formatCOP(currentQuote.valor)}`, 20, 50);
+    doc.text(VEHICULO.nombre, 20, 80);
+    doc.save("Cotizacion.pdf");
+}
+
+function iniciarDia() {
+    const v = document.getElementById('kmIn').value;
+    if(!v) return;
+    kilometraje.push({fecha: new Date().toLocaleDateString('es-CO'), kmIn: v, kmFinal: null});
+    localStorage.setItem('cot_km', JSON.stringify(kilometraje));
+    renderApp();
+}
+
+function cerrarDia() {
+    const v = document.getElementById('kmFi').value;
+    const hoy = new Date().toLocaleDateString('es-CO');
+    const idx = kilometraje.findIndex(k => k.fecha === hoy);
+    if(v < kilometraje[idx].kmIn) return alert("Error: Km final menor al inicial");
+    kilometraje[idx].kmFinal = v;
+    localStorage.setItem('cot_km', JSON.stringify(kilometraje));
+    renderApp();
+}
+
+window.switchView = (v) => { currentView = v; renderApp(); };
+window.onload = renderApp;
+
+})();
+</script>
+</body>
+</html>
