@@ -1,0 +1,393 @@
+const FIRMA_DIGITAL_B64 = "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";
+
+// --- VEHICULO Y CONFIG ---
+let vehicleConfig = VEHICULO;
+let ingresos = JSON.parse(localStorage.getItem('cot_ingresos')) || [];
+let gastos = JSON.parse(localStorage.getItem('cot_gastos')) || [];
+let historialBIP = JSON.parse(localStorage.getItem('cot_bip_historial')) || [];
+let BIP_CFG = JSON.parse(localStorage.getItem('cot_bip_cfg')) || {
+    empresa: "BIP TRANSPORTES S.A.S.", nit: "830.061.945-7",
+    canonMensual: 3000000, diaLimitePago: 20,
+    conductorNombre: "Geovanny Solar Niño", conductorCedula: "72.249.866", conductorExpedida: "Barranquilla",
+    conductorCelular: "310-571-3949"
+};
+
+// --- MÓDULO MAESTRO SOLAR VIP (LUGARES, PEAJES, RUTAS) ---
+const SolarDB = {
+    // Lugares Frecuentes unificados (Fase 14-15)
+    LUGARES: JSON.parse(localStorage.getItem('solar_lugares')) || [
+        {id:'l_bq', nombre:'Barranquilla', depto:'Atlántico', tipo:'ciudad', direccion:''},
+        {id:'l_ct', nombre:'Cartagena', depto:'Bolívar', tipo:'ciudad', direccion:''},
+        {id:'l_sm', nombre:'Santa Marta', depto:'Magdalena', tipo:'ciudad', direccion:''}
+    ],
+    PEAJES: JSON.parse(localStorage.getItem('solar_peajes')) || [
+        {id:'p_pc', nombre:'Puerto Colombia', valor:20700, estado:'activo'},
+        {id:'p_ma', nombre:'Marahuaco', valor:22200, estado:'activo'},
+        {id:'p_sb', nombre:'Sabanagrande', valor:13300, estado:'activo'},
+        {id:'p_ba', nombre:'Bayunca', valor:12600, estado:'activo'},
+        {id:'p_ta', nombre:'Tasajera', valor:17300, estado:'activo'}
+    ],
+    RUTAS: JSON.parse(localStorage.getItem('solar_rutas')) || [
+        {id:'r_vmar', origen:'l_bq', destino:'l_ct', nombreRuta:'Vía al Mar', kilometros:120, peajesRuta:{ida:[{peajeId:'p_pc',orden:0},{peajeId:'p_ma',orden:1}],vuelta:[{peajeId:'p_ma',orden:0},{peajeId:'p_pc',orden:1}]}},
+        {id:'r_cord1', origen:'l_bq', destino:'l_ct', nombreRuta:'Cordialidad (Sabanagrande/Bayunca)', kilometros:130, peajesRuta:{ida:[{peajeId:'p_sb',orden:0},{peajeId:'p_ba',orden:1}],vuelta:[{peajeId:'p_ba',orden:0},{peajeId:'p_sb',orden:1}]}},
+        {id:'r_sm', origen:'l_bq', destino:'l_sm', nombreRuta:'Troncal Caribe', kilometros:105, peajesRuta:{ida:[{peajeId:'p_ta',orden:0}],vuelta:[{peajeId:'p_ta',orden:0}]}}
+    ],
+    obtenerLugar: (id) => SolarDB.LUGARES.find(l => l.id === id),
+    obtenerPeaje: (id) => SolarDB.PEAJES.find(p => p.id === id),
+    obtenerRuta: (id) => SolarDB.RUTAS.find(r => r.id === id),
+    guardar: () => {
+        localStorage.setItem('solar_lugares', JSON.stringify(SolarDB.LUGARES));
+        localStorage.setItem('solar_peajes', JSON.stringify(SolarDB.PEAJES));
+        localStorage.setItem('solar_rutas', JSON.stringify(SolarDB.RUTAS));
+    }
+};
+
+// --- UTILIDADES ---
+const formatCOP = (v) => new Intl.NumberFormat('es-CO', {style:'currency', currency:'COP', minimumFractionDigits:0}).format(v);
+const formatNum = (v) => new Intl.NumberFormat('es-CO').format(Math.round(v));
+const mesNombre = (n) => ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'][n];
+
+function fechaISOaLocal(iso) {
+    if(!iso) return '';
+    const [y, m, d] = iso.split('-');
+    return `${d}/${m}/${y}`;
+}
+
+function fechaLocalHoyISO() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// --- VISTAS ---
+let currentView = 'dashboard';
+let currentQuote = null;
+
+function renderNav() {
+    const views = [
+        {id:'dashboard', label:'📊 Inicio'},
+        {id:'cotizar', label:'📋 Cotizar'},
+        {id:'finanzas', label:'💹 Finanzas'},
+        {id:'bip', label:'🏢 Canon BIP'}
+    ];
+    let html = '<nav class="nav-bar">';
+    views.forEach(v => {
+        html += `<button class="nav-btn ${currentView===v.id?'active':''}" onclick="switchView('${v.id}')">${v.label}</button>`;
+    });
+    html += '</nav>';
+    return html;
+}
+
+function renderApp() {
+    const main = document.getElementById('app');
+    let content = '';
+    
+    if(currentView === 'dashboard') content = renderDashboard();
+    else if(currentView === 'cotizar') content = renderCotizar();
+    else if(currentView === 'finanzas') content = renderFinanzas();
+    else if(currentView === 'bip') content = renderBip();
+
+    main.innerHTML = `
+        <div class="app-container">
+            <header class="app-header">
+                <h1>SOLAR VIP</h1>
+                <p class="subtitle">${vehicleConfig.marca} ${vehicleConfig.modelo} - ${vehicleConfig.placa}</p>
+            </header>
+            ${renderNav()}
+            <main class="app-main">${content}</main>
+        </div>
+    `;
+}
+
+// --- DASHBOARD (KILOMETRAJE SEPARADO - FASE 13) ---
+function renderDashboard() {
+    const hoyLocal = fechaISOaLocal(fechaLocalHoyISO());
+    let kilometrajeDiario = JSON.parse(localStorage.getItem('cot_km_diario')) || [];
+    const regHoy = kilometrajeDiario.find(k => k.fecha === hoyLocal);
+    const abierta = regHoy && regHoy.kmFinal === null;
+
+    let html = '<div class="card"><h2>🚗 Kilometraje Diario</h2>';
+    
+    if(!regHoy) {
+        html += `
+            <div class="form-group full">
+                <label>Kilometraje Inicial (Mañana)</label>
+                <input type="number" id="kmIn" class="input" placeholder="Ej: 42000">
+            </div>
+            <button class="btn-primary" style="background:#059669" onclick="iniciarJornada()">🟢 Registrar Inicio de Jornada</button>
+        `;
+    } else if(abierta) {
+        html += `
+            <div class="cost-row"><span>Km Inicial:</span><span>${formatNum(regHoy.kmIn)} km</span></div>
+            <div class="form-group full" style="margin-top:10px">
+                <label>Kilometraje Final (Noche)</label>
+                <input type="number" id="kmFi" class="input" placeholder="Ej: ${regHoy.kmIn + 50}">
+            </div>
+            <button class="btn-primary" style="background:#dc2626" onclick="cerrarJornada()">🔴 Cerrar Jornada</button>
+        `;
+    } else {
+        html += `
+            <div class="cost-row"><span>Km Inicial:</span><span>${formatNum(regHoy.kmIn)} km</span></div>
+            <div class="cost-row"><span>Km Final:</span><span>${formatNum(regHoy.kmFinal)} km</span></div>
+            <div class="cost-row total"><span>Recorridos hoy:</span><span>${formatNum(regHoy.kmRecorridos)} km</span></div>
+            <p class="alert alert-success" style="text-align:center">✅ Jornada del día completada</p>
+        `;
+    }
+    html += '</div>';
+    return html;
+}
+
+function iniciarJornada() {
+    const val = parseFloat(document.getElementById('kmIn').value);
+    if(!val || val <= 0) return alert('Ingresa un kilometraje válido.');
+    let kmData = JSON.parse(localStorage.getItem('cot_km_diario')) || [];
+    kmData.push({
+        fecha: fechaISOaLocal(fechaLocalHoyISO()),
+        kmIn: val,
+        kmFinal: null,
+        kmRecorridos: 0
+    });
+    localStorage.setItem('cot_km_diario', JSON.stringify(kmData));
+    renderApp();
+}
+
+function cerrarJornada() {
+    const val = parseFloat(document.getElementById('kmFi').value);
+    const hoyLocal = fechaISOaLocal(fechaLocalHoyISO());
+    let kmData = JSON.parse(localStorage.getItem('cot_km_diario')) || [];
+    const idx = kmData.findIndex(k => k.fecha === hoyLocal);
+    
+    if(val < kmData[idx].kmIn) return alert('Error: El km final no puede ser menor al inicial.');
+    
+    kmData[idx].kmFinal = val;
+    kmData[idx].kmRecorridos = val - kmData[idx].kmIn;
+    localStorage.setItem('cot_km_diario', JSON.stringify(kmData));
+    renderApp();
+}
+
+// --- COTIZADOR (MODALIDADES Y LUGARES - FASE 14) ---
+function renderCotizar() {
+    const lFrec = SolarDB.LUGARES.filter(l => l.tipo !== 'ciudad');
+    
+    let html = `
+        <div class="card">
+            <h2>📋 Cotizar Servicio</h2>
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label>Modalidad de Servicio</label>
+                    <select id="modalidad" class="input" onchange="toggleCampos()">
+                        <option value="solo_ida">Solo ida</option>
+                        <option value="ida_vuelta">Ida y vuelta</option>
+                        <option value="recogida">Recogida</option>
+                        <option value="por_hora">Servicio por hora / Disposición</option>
+                        <option value="espera">Hora de espera</option>
+                        <option value="city_tour">City Tour</option>
+                    </select>
+                </div>
+
+                <div class="form-group full" id="secLugar">
+                    <label>📍 Cargar Lugar Guardado (Opcional)</label>
+                    <select class="input" onchange="cargarLugar(this.value)">
+                        <option value="">-- Seleccionar --</option>
+                        ${lFrec.map(l => `<option value="${l.id}">${l.nombre} (${l.depto})</option>`).join('')}
+                    </select>
+                </div>
+
+                <div class="form-group" id="origGrp">
+                    <label>Ciudad Origen</label>
+                    <select id="orig" class="input" onchange="filtrarRutas()">${SolarDB.LUGARES.filter(l=>l.tipo==='ciudad').map(l=>`<option value="${l.id}">${l.nombre}</option>`).join('')}</select>
+                </div>
+                <div class="form-group" id="destGrp">
+                    <label>Ciudad Destino</label>
+                    <select id="dest" class="input" onchange="filtrarRutas()">${SolarDB.LUGARES.filter(l=>l.tipo==='ciudad').map(l=>`<option value="${l.id}">${l.nombre}</option>`).join('')}</select>
+                </div>
+
+                <div class="form-group full" id="dirGrp">
+                    <label>Dirección exacta de recogida</label>
+                    <input type="text" id="dirO" class="input">
+                </div>
+                <div class="form-group full" id="dirDGrp">
+                    <label>Dirección exacta de destino</label>
+                    <input type="text" id="dirD" class="input">
+                </div>
+
+                <div class="form-group full" id="rutaGrp">
+                    <label>Ruta (Motor SolarDB)</label>
+                    <select id="rutaSel" class="input" onchange="cambiarRuta()"></select>
+                </div>
+
+                <div class="form-group" id="kmGrp">
+                    <label>Km ida</label>
+                    <input type="number" id="kmVal" class="input">
+                </div>
+                <div class="form-group" id="tiempoGrp">
+                    <label>Tiempo est. (min)</label>
+                    <input type="number" id="tVal" class="input">
+                </div>
+
+                <!-- CAMPOS MODALIDADES -->
+                <div class="form-group full" id="horasGrp" style="display:none">
+                    <label>Horas Contratadas</label>
+                    <input type="number" id="hCont" class="input">
+                </div>
+                <div class="form-group full" id="minEsperaGrp" style="display:none">
+                    <label>Minutos de espera</label>
+                    <input type="number" id="mEsp" class="input">
+                </div>
+
+                <div class="form-group">
+                    <label>Valor del Servicio</label>
+                    <input type="number" id="valServ" class="input">
+                </div>
+                <div class="form-group">
+                    <label>Moneda</label>
+                    <select id="moneda" class="input"><option>COP</option><option>USD</option></select>
+                </div>
+                <div class="form-group full">
+                    <label>Cliente</label>
+                    <input type="text" id="cliNom" class="input">
+                </div>
+            </div>
+            <button class="btn-primary" onclick="generarCot()">🧮 Generar Cotización</button>
+            <div id="resCot"></div>
+
+            <div style="margin-top:20px; border-top:1px solid var(--border); padding-top:15px">
+                <button class="btn-secondary" style="width:100%" onclick="abrirAdminLugares()">📍 Administrar Lugares Guardados</button>
+            </div>
+        </div>
+    `;
+    setTimeout(() => { toggleCampos(); filtrarRutas(); }, 0);
+    return html;
+}
+
+function toggleCampos() {
+    const mod = document.getElementById('modalidad').value;
+    const isBasic = (mod !== 'por_hora' && mod !== 'espera');
+    
+    document.getElementById('secLugar').style.display = isBasic ? 'block' : 'none';
+    document.getElementById('origGrp').style.display = isBasic ? 'block' : 'none';
+    document.getElementById('destGrp').style.display = isBasic ? 'block' : 'none';
+    document.getElementById('dirGrp').style.display = isBasic ? 'block' : 'none';
+    document.getElementById('dirDGrp').style.display = isBasic ? 'block' : 'none';
+    document.getElementById('rutaGrp').style.display = isBasic ? 'block' : 'none';
+    document.getElementById('kmGrp').style.display = isBasic ? 'block' : 'none';
+    document.getElementById('tiempoGrp').style.display = isBasic ? 'block' : 'none';
+    
+    document.getElementById('horasGrp').style.display = (mod === 'por_hora') ? 'block' : 'none';
+    document.getElementById('minEsperaGrp').style.display = (mod === 'espera') ? 'block' : 'none';
+}
+
+function filtrarRutas() {
+    const o = document.getElementById('orig').value;
+    const d = document.getElementById('dest').value;
+    const sel = document.getElementById('rutaSel');
+    const rutas = SolarDB.RUTAS.filter(r => (r.origen === o && r.destino === d) || (r.origen === d && r.destino === o));
+    
+    let html = '<option value="manual">-- Ingresar ruta manualmente --</option>';
+    rutas.forEach(r => html += `<option value="${r.id}">${r.nombreRuta}</option>`);
+    sel.innerHTML = html;
+    cambiarRuta();
+}
+
+function cambiarRuta() {
+    const rid = document.getElementById('rutaSel').value;
+    if(rid === 'manual') return;
+    const ruta = SolarDB.obtenerRuta(rid);
+    document.getElementById('kmVal').value = ruta.kilometros;
+    document.getElementById('tVal').value = 0; 
+}
+
+function cargarLugar(lid) {
+    if(!lid) return;
+    const lugar = SolarDB.obtenerLugar(lid);
+    document.getElementById('orig').value = 'l_bq'; // Default Barranquilla
+    document.getElementById('dirO').value = lugar.nombre;
+    document.getElementById('dirD').value = lugar.direccion;
+    filtrarRutas();
+}
+
+function abrirAdminLugares() {
+    const n = prompt("Nombre del lugar (Ej: Aeropuerto):");
+    if(!n) return;
+    const d = prompt("Dirección:");
+    const de = prompt("Departamento:");
+    SolarDB.LUGARES.push({id: 'l_'+Date.now(), nombre: n, tipo: 'otro', direccion: d, depto: de});
+    SolarDB.guardar();
+    renderApp();
+}
+
+function generarCot() {
+    const val = parseFloat(document.getElementById('valServ').value);
+    if(!val) return alert("Ingresa el valor.");
+    
+    currentQuote = {
+        id: Date.now(),
+        valor: val,
+        moneda: document.getElementById('moneda').value,
+        cliente: document.getElementById('cliNom').value || 'Cliente',
+        modalidad: document.getElementById('modalidad').value,
+        fecha: new Date().toLocaleDateString('es-CO')
+    };
+    
+    document.getElementById('resCot').innerHTML = `
+        <div class="result-card fade-in">
+            <div class="quote-box">
+                <div class="dvalue">${formatCOP(val)} ${currentQuote.moneda}</div>
+                <p>${currentQuote.modalidad.replace('_',' ')}</p>
+            </div>
+            <button class="btn-primary" onclick="crearPDF()">📄 Descargar PDF</button>
+        </div>
+    `;
+}
+
+function crearPDF() {
+    const jsPDFCtor = window.jspdf.jsPDF;
+    const pdf = new jsPDFCtor('p', 'mm', 'a4');
+    const q = currentQuote;
+    
+    pdf.setFillColor(26, 95, 180);
+    pdf.rect(0, 0, 210, 25, 'F');
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(18);
+    pdf.text('SOLAR VIP - COTIZACIÓN', 15, 16);
+    
+    pdf.setTextColor(30, 41, 59);
+    pdf.setFontSize(11);
+    pdf.text(`Fecha: ${q.fecha}`, 15, 40);
+    pdf.text(`Cliente: ${q.cliente}`, 15, 48);
+    pdf.text(`Servicio: ${q.modalidad.toUpperCase().replace('_',' ')}`, 15, 56);
+    
+    pdf.setFontSize(22);
+    pdf.text(`TOTAL: ${formatCOP(q.valor)} ${q.moneda}`, 15, 80);
+    
+    if(window.FIRMA_DIGITAL_B64) {
+        pdf.addImage(window.FIRMA_DIGITAL_B64, 'PNG', 15, 100, 40, 30);
+    }
+    pdf.setFontSize(10);
+    pdf.text(VEHICULO.nombre, 15, 135);
+    pdf.text('Asesor de Transporte Ejecutivo', 15, 140);
+    
+    pdf.save(`Cotizacion_${q.id}.pdf`);
+}
+
+// --- OTROS (PLACEHOLDERS) ---
+function renderFinanzas() { return '<div class="card"><h2>💹 Finanzas</h2><p class="hint">Control de ingresos y gastos.</p></div>'; }
+function renderBip() { return '<div class="card"><h2>🏢 Canon BIP</h2><p class="hint">Gestión de arriendo y compensación.</p></div>'; }
+
+function switchView(v) { currentView = v; renderApp(); }
+
+window.onload = renderApp;
+window.switchView = switchView;
+window.iniciarJornada = iniciarJornada;
+window.cerrarJornada = cerrarJornada;
+window.toggleCampos = toggleCampos;
+window.filtrarRutas = filtrarRutas;
+window.cambiarRuta = cambiarRuta;
+window.cargarLugar = cargarLugar;
+window.abrirAdminLugares = abrirAdminLugares;
+window.generarCot = generarCot;
+window.crearPDF = crearPDF;
+
+})();
+</script>
+</body>
+</html>
