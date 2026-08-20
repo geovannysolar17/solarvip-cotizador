@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SOLAR VIP - Sistema Maestro</title>
+    <style>
+        :root {
+            --accent: #1a5fb4; --accent-grad: linear-gradient(135deg, #0f2942 0%, #1a5fb4 100%);
+            --bg: #f5f7fa; --card: #ffffff; --text: #1e293b; --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; }
+        .app-container { max-width: 480px; margin: 0 auto; padding-bottom: 50px; }
+        .app-header { background: var(--accent-grad); color: white; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        .nav-bar { display: flex; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 65px; z-index: 99; overflow-x: auto; }
+        .nav-btn { flex: 1; padding: 12px; border: none; background: transparent; color: #64748b; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+        .nav-btn.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
+        .app-main { padding: 15px; }
+        .card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .form-group { display: flex; flex-direction: column; margin-bottom: 12px; }
+        label { font-size: 10px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 4px; }
+        .input { padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; width: 100%; outline: none; }
+        .btn-primary { width: 100%; padding: 15px; background: var(--accent-grad); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; }
+        .btn-secondary { padding: 10px; background: #f1f5f9; color: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+        .cost-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--border); font-size: 14px; }
+        .quote-box { background: var(--accent-grad); color: white; padding: 20px; text-align: center; border-radius: 12px; margin-top: 15px; }
+        .alert { padding: 12px; border-radius: 10px; font-size: 13px; margin: 10px 0; background: #d1fae5; color: #065f46; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function() {
+    "use strict";
+
+    // --- CONFIGURACIÓN ---
+    let vehicle = JSON.parse(localStorage.getItem('sv_vehiculo')) || {
+        nombre: "Geovanny Solar Niño", placa: "NWX964", ciudadBase: "Barranquilla"
+    };
+    let kilometraje = JSON.parse(localStorage.getItem('sv_km')) || [];
+    let lugares = JSON.parse(localStorage.getItem('sv_lugares')) || [
+        {id: 1, nombre: "Aeropuerto Ernesto Cortissoz", ciudad: "Barranquilla", direccion: "Aeropuerto Ernesto Cortissoz"}
+    ];
+    let rutas = JSON.parse(localStorage.getItem('sv_rutas')) || [];
+    let historial = JSON.parse(localStorage.getItem('sv_historial')) || [];
+
+    const CIUDADES = ["Barranquilla", "Cartagena", "Santa Marta", "Valledupar", "Sincelejo", "Montería", "Riohacha", "Bogotá"];
+    let currentView = 'dashboard';
+    let currentQuote = null;
+
+    // --- FUNCIONES CORE ---
+    function renderApp() {
+        const app = document.getElementById('app');
+        let content = '';
+        if (currentView === 'dashboard') content = renderDashboard();
+        else if (currentView === 'cotizar') content = renderCotizar();
+        else if (currentView === 'ajustes') content = renderAjustes();
+
+        app.innerHTML = `
+            <div class="app-container">
+                <header class="app-header">
+                    <h2>SOLAR VIP</h2>
+                    <p style="font-size:10px; opacity:0.8">${vehicle.placa} | ${vehicle.nombre}</p>
+                </header>
+                <nav class="nav-bar">
+                    <button class="nav-btn ${currentView==='dashboard'?'active':''}" onclick="switchV('dashboard')">INICIO</button>
+                    <button class="nav-btn ${currentView==='cotizar'?'active':''}" onclick="switchV('cotizar')">COTIZAR</button>
+                    <button class="nav-btn ${currentView==='ajustes'?'active':''}" onclick="switchV('ajustes')">AJUSTES</button>
+                </nav>
+                <main class="app-main">${content}</main>
+            </div>
+        `;
+    }
+
+    // --- DASHBOARD (FASE 13 CORREGIDA) ---
+    function renderDashboard() {
+        const hoy = new Date().toLocaleDateString('es-CO');
+        const reg = kilometraje.find(k => k.fecha === hoy);
+        let html = '<div class="card"><h3>🚗 Control de Kilometraje</h3>';
+        if (!reg) {
+            html += `<div class="form-group"><label>Km Inicial (Mañana)</label><input type="number" id="kmIn" class="input"></div>
+                     <button class="btn-primary" onclick="iniciarJ()">🟢 Abrir Jornada</button>`;
+        } else if (reg.kmFinal === null) {
+            html += `<div class="cost-row"><span>Km Inicial:</span><span>${reg.kmIn} km</span></div>
+                     <div class="form-group" style="margin-top:10px"><label>Km Final (Noche)</label><input type="number" id="kmFi" class="input"></div>
+                     <button class="btn-primary" style="background:#dc2626" onclick="cerrarJ()">🔴 Cerrar Jornada</button>`;
+        } else {
+            html += `<div class="cost-row"><span>Recorrido hoy:</span><span style="font-weight:800">${reg.kmFi - reg.kmIn} km</span></div>
+                     <div class="alert">✅ Jornada de hoy cerrada.</div>`;
+        }
+        html += '</div>';
+        return html;
+    }
+
+    // --- COTIZADOR (FASE 14) ---
+    function renderCotizar() {
+        return `
+            <div class="card">
+                <h3>📋 Cotizar Servicio</h3>
+                <div class="form-group">
+                    <label>Modalidad</label>
+                    <select id="mod" class="input" onchange="toggleMod()">
+                        <option value="solo_ida">Solo ida</option>
+                        <option value="ida_vuelta">Ida y vuelta</option>
+                        <option value="recogida">Recogida</option>
+                        <option value="por_hora">Servicio por hora / Disposición</option>
+                        <option value="espera">Hora de espera</option>
+                        <option value="city_tour">City Tour</option>
+                    </select>
+                </div>
+                <div id="zonaRuta">
+                    <div class="form-group"><label>📍 Cargar Lugar Guardado</label>
+                    <select class="input" onchange="cargarL(this.value)"><option value="">-- Seleccionar --</option>${lugares.map(l=>`<option value="${l.id}">${l.nombre}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Ciudad Origen</label><select id="orig" class="input">${CIUDADES.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Dirección Recogida</label><input type="text" id="dirO" class="input"></div>
+                    <div class="form-group"><label>Ciudad Destino</label><select id="dest" class="input">${CIUDADES.map(c=>`<option value="${c}">${c}</option>`).join('')}</select></div>
+                    <div class="form-group"><label>Dirección Destino</label><input type="text" id="dirD" class="input"></div>
+                </div>
+                <div id="zonaTiempo" style="display:none">
+                    <div class="form-group"><label>Cantidad (Horas/Minutos)</label><input type="number" id="cantT" class="input"></div>
+                </div>
+                <div class="form-group"><label>Valor del Servicio</label><input type="number" id="valorS" class="input"></div>
+                <div class="form-group"><label>Cliente</label><input type="text" id="cliN" class="input"></div>
+                <button class="btn-primary" onclick="procesarC()">🧮 Generar Cotización</button>
+                <div id="resultadoC"></div>
+            </div>
+        `;
+    }
+
+    function renderAjustes() {
+        return `<div class="card"><h3>📍 Guardar Lugar Frecuente</h3>
+                <div class="form-group"><label>Nombre Lugar</label><input type="text" id="lnom" class="input"></div>
+                <div class="form-group"><label>Ciudad</label><input type="text" id="lciu" class="input"></div>
+                <div class="form-group"><label>Dirección Exacta</label><input type="text" id="ldir" class="input"></div>
+                <button class="btn-primary" onclick="saveL()">💾 Guardar</button></div>`;
+    }
+
+    // --- LÓGICA DE BOTONES ---
+    window.switchV = (v) => { currentView = v; renderApp(); };
+
+    window.iniciarJ = () => {
+        const val = document.getElementById('kmIn').value;
+        if (!val) return alert("Ingresa Km");
+        kilometraje.push({fecha: new Date().toLocaleDateString('es-CO'), kmIn: parseFloat(val), kmFinal: null});
+        localStorage.setItem('sv_km', JSON.stringify(kilometraje));
+        renderApp();
+    };
+
+    window.cerrarJ = () => {
+        const val = document.getElementById('kmFi').value;
+        const hoy = new Date().toLocaleDateString('es-CO');
+        const idx = kilometraje.findIndex(k => k.fecha === hoy);
+        if (parseFloat(val) < kilometraje[idx].kmIn) return alert("Km final no puede ser menor");
+        kilometraje[idx].kmFinal = parseFloat(val);
+        localStorage.setItem('sv_km', JSON.stringify(kilometraje));
+        renderApp();
+    };
+
+    window.toggleMod = () => {
+        const m = document.getElementById('mod').value;
+        const isT = (m === 'por_hora' || m === 'espera');
+        document.getElementById('zonaRuta').style.display = isT ? 'none' : 'block';
+        document.getElementById('zonaTiempo').style.display = isT ? 'block' : 'none';
+    };
+
+    window.cargarL = (id) => {
+        const lug = lugares.find(l => l.id == id);
+        if (lug) {
+            document.getElementById('dirO').value = lug.direccion;
+            document.getElementById('orig').value = lug.ciudad;
+        }
+    };
+
+    window.saveL = () => {
+        const n = document.getElementById('lnom').value;
+        const c = document.getElementById('lciu').value;
+        const d = document.getElementById('ldir').value;
+        lugares.push({id: Date.now(), nombre: n, ciudad: c, direccion: d});
+        localStorage.setItem('sv_lugares', JSON.stringify(lugares));
+        alert("Lugar guardado");
+        switchV('cotizar');
+    };
+
+    window.procesarC = () => {
+        const val = document.getElementById('valorS').value;
+        const cli = document.getElementById('cliN').value || "Cliente";
+        const mod = document.getElementById('mod').value;
+        if (!val) return alert("Ingresa el valor");
+
+        currentQuote = { valor: val, cliente: cli, modalidad: mod, fecha: new Date().toLocaleDateString() };
+        document.getElementById('resultadoC').innerHTML = `
+            <div class="quote-box">
+                <h2>$ ${new Intl.NumberFormat('es-CO').format(val)}</h2>
+                <p>${mod.replace('_',' ')}</p>
+                <button class="btn-primary" style="margin-top:10px; background:white; color:black" onclick="crearPDF()">📄 Descargar PDF</button>
+            </div>
+        `;
+    };
+
+    window.crearPDF = () => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFontSize(20);
+        doc.text("COTIZACION SOLAR VIP", 20, 20);
+        doc.setFontSize(12);
+        doc.text(`Fecha: ${currentQuote.fecha}`, 20, 40);
+        doc.text(`Cliente: ${currentQuote.cliente}`, 20, 50);
+        doc.text(`Servicio: ${currentQuote.modalidad.toUpperCase()}`, 20, 60);
+        doc.setFontSize(16);
+        doc.text(`TOTAL: $ ${new Intl.NumberFormat('es-CO').format(currentQuote.valor)}`, 20, 80);
+        doc.text("__________________________", 20, 110);
+        doc.text(vehicle.nombre, 20, 120);
+        doc.save("Cotizacion.pdf");
+    };
+
+    window.onload = renderApp;
+
+})();
+</script>
+</body>
+</html>
