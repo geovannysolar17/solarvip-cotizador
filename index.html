@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar VIP | Transporte Ejecutivo y City Tours Costa Caribe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#070b14',
+                            card: '#0f172a',
+                            border: '#1e293b',
+                            gold: '#d4af37',
+                            goldHover: '#e5c158',
+                            accent: '#3b82f6'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 20%, #1e3a8a 0%, #070b14 70%);
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-100 font-sans antialiased selection:bg-brand-gold selection:text-black">
+
+    <!-- Top Bar / Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-panel border-b border-brand-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-gold to-yellow-600 flex items-center justify-center shadow-lg shadow-brand-gold/20">
+                    <i data-lucide="crown" class="w-6 h-6 text-black"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-wider text-white">SOLAR <span class="text-brand-gold">VIP</span></span>
+                    <p class="text-[10px] uppercase tracking-widest text-slate-400 font-medium">Transporte Ejecutivo</p>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
+                <a href="#servicios" class="hover:text-brand-gold transition">Servicios</a>
+                <a href="#flota" class="hover:text-brand-gold transition">Vehículo VIP</a>
+                <a href="#destinos" class="hover:text-brand-gold transition">Costa Caribe</a>
+                <a href="#cotizador" class="hover:text-brand-gold transition">Cotizar en Línea</a>
+            </nav>
+
+            <a href="https://wa.me/573105713949?text=Hola%20SOLAR%20VIP,%20deseo%20solicitar%20información%20sobre%20sus%20servicios%20ejecutivos." target="_blank" class="flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition shadow-lg shadow-emerald-900/40">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">WhatsApp</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen hero-gradient pt-32 pb-20 flex items-center overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:24px_24px]"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs font-semibold tracking-wide uppercase">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>Excelencia y Distinción en la Costa Caribe</span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                    Tu Conexión Ejecutiva en la <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold via-yellow-200 to-amber-500">Costa Caribe</span>
+                </h1>
+                
+                <p class="text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-light">
+                    Brindamos traslados aeropuerto-aeropuerto garantizados, city tours especializados y movilidad empresarial con un estándar superior de confort, seguridad y absoluta puntualidad.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                    <a href="#cotizador" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-gold to-yellow-600 text-black font-bold text-center shadow-xl shadow-brand-gold/20 hover:brightness-110 transition">
+                        Cotizar y Reservar Viaje
+                    </a>
+                    <a href="#destinos" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel text-white font-semibold text-center hover:border-brand-gold/50 transition">
+                        Explorar Destinos
+                    </a>
+                </div>
+
+                <div class="pt-6 border-t border-slate-800/80 flex items-center justify-center lg:justify-start space-x-8 text-sm text-slate-400">
+                    <div><strong class="text-white block text-lg">100%</strong> Garantizado</div>
+                    <div class="w-px h-8 bg-slate-800"></div>
+                    <div><strong class="text-white block text-lg">24/7</strong> Atención Ejecutiva</div>
+                    <div class="w-px h-8 bg-slate-800"></div>
+                    <div><strong class="text-white block text-lg">Confort</strong> Premium</div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 relative flex justify-center">
+                <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-brand-gold/30 to-blue-600/30 blur-xl opacity-50"></div>
+                <div class="relative glass-panel rounded-3xl p-6 text-center shadow-2xl w-full max-w-md">
+                    <img src="image_15.png" alt="Renault Duster Iconic 2026" class="w-full h-auto object-contain drop-shadow-2xl transform hover:scale-105 transition duration-500">
+                    <div class="mt-4 pt-4 border-t border-brand-border text-left">
+                        <span class="text-xs uppercase tracking-widest text-brand-gold font-bold">Vehículo Asignado</span>
+                        <h3 class="text-lg font-bold text-white">Renault Duster Iconic 1.3 Turbo (Modelo 2026)</h3>
+                        <p class="text-xs text-slate-400 mt-1">Máxima comodidad, aire acondicionado bi-zona, motor turbo eficiente y amplio espacio para equipaje.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="servicios" class="py-24 bg-brand-dark relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Nuestros Servicios Frecuentes</h2>
+                <p class="text-slate-400">Tarifas transparentes y soluciones de transporte diseñadas para ejecutivos y viajeros exigentes.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover:border-brand-gold/50 transition duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center text-brand-gold group-hover:scale-110 transition">
+                            <i data-lucide="plane" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Traslados Aeropuerto</h3>
+                        <p class="text-sm text-slate-400">Rutas directas y puntuales entre Barranquilla, Cartagena y Santa Marta con discreción absoluta.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-brand-border/50">
+                        <span class="text-xs text-slate-500 block">Tarifa fija orientativa</span>
+                        <span class="text-brand-gold font-bold text-lg">Desde $550.000 COP</span>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover:border-brand-gold/50 transition duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center text-brand-gold group-hover:scale-110 transition">
+                            <i data-lucide="compass" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">City Tours</h3>
+                        <p class="text-sm text-slate-400">Recorridos turísticos e históricos guiados por los sitios más emblemáticos de la Costa a tu ritmo.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-brand-border/50">
+                        <span class="text-xs text-slate-500 block">Modalidad flexible</span>
+                        <span class="text-brand-gold font-bold text-lg">$50.000 COP / hora</span>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover:border-brand-gold/50 transition duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center text-brand-gold group-hover:scale-110 transition">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Servicios Empresariales</h3>
+                        <p class="text-sm text-slate-400">Disponibilidad ejecutiva para corporaciones, reuniones de alto nivel y comitivas especiales.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-brand-border/50">
+                        <span class="text-xs text-slate-500 block">Atención corporativa</span>
+                        <span class="text-brand-gold font-bold text-sm">Cotización personalizada</span>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between hover:border-brand-gold/50 transition duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center text-brand-gold group-hover:scale-110 transition">
+                            <i data-lucide="car" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Servicio Particular</h3>
+                        <p class="text-sm text-slate-400">Desplazamientos personalizados familiares o personales con máxima comodidad y confort.</p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-brand-border/50">
+                        <span class="text-xs text-slate-500 block">Confort garantizado</span>
+                        <span class="text-brand-gold font-bold text-sm">Seguridad y confianza</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinos Ampliados & City Tour Costa Caribe -->
+    <section id="destinos" class="py-24 bg-slate-950 relative border-t border-brand-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                <span class="text-brand-gold font-bold text-xs uppercase tracking-widest">Experiencias y Destinos Imperdibles</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Recorridos Turísticos por la Costa Caribe</h2>
+                <p class="text-slate-400">Te llevamos a descubrir la magia del río y el mar con el máximo confort a bordo de nuestra Renault Duster Iconic 2026.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Barranquilla: Malecón y Río -->
+                <div class="glass-panel rounded-2xl overflow-hidden group hover:border-brand-gold/50 transition">
+                    <div class="h-48 bg-gradient-to-br from-blue-900 to-indigo-950 p-6 flex flex-col justify-end relative">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Barranquilla • Río Magdalena</span>
+                            <h3 class="text-xl font-bold text-white">Gran Malecón del Río</h3>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            El sitio más visitado de Colombia a la orilla del río Magdalena. Un espacio moderno para caminar, disfrutar la brisa y contemplar atardeceres inolvidables.
+                        </p>
+                        <div class="text-xs text-brand-gold font-semibold pt-2 border-t border-brand-border">Incluido en nuestros City Tours urbanos.</div>
+                    </div>
+                </div>
+
+                <!-- Barranquilla: Estatua de Shakira y Cultura -->
+                <div class="glass-panel rounded-2xl overflow-hidden group hover:border-brand-gold/50 transition">
+                    <div class="h-48 bg-gradient-to-br from-yellow-900 to-slate-950 p-6 flex flex-col justify-end relative">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Barranquilla • Monumentos</span>
+                            <h3 class="text-xl font-bold text-white">Estatua de Shakira & Carnaval</h3>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Recorre los puntos emblemáticos de la Puerta de Oro, rinde homenaje al talento local con la imponente estatua y vive el espíritu festivo del Carnaval.
+                        </p>
+                        <div class="text-xs text-brand-gold font-semibold pt-2 border-t border-brand-border">Paradas fotográficas y guía personalizada.</div>
+                    </div>
+                </div>
+
+                <!-- Cartagena: Ciudad Amurallada -->
+                <div class="glass-panel rounded-2xl overflow-hidden group hover:border-brand-gold/50 transition">
+                    <div class="h-48 bg-gradient-to-br from-amber-900 to-slate-950 p-6 flex flex-col justify-end relative">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Cartagena • Patrimonio</span>
+                            <h3 class="text-xl font-bold text-white">La Ciudad Amurallada</h3>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Callejones llenos de historia, arquitectura colonial imponente, plazas vibrantes y baluartes que guardan secretos de piratas y galeones.
+                        </p>
+                        <div class="text-xs text-brand-gold font-semibold pt-2 border-t border-brand-border">Traslado puerta a puerta garantizado.</div>
+                    </div>
+                </div>
+
+                <!-- Cartagena: Playas e Islas -->
+                <div class="glass-panel rounded-2xl overflow-hidden group hover:border-brand-gold/50 transition">
+                    <div class="h-48 bg-gradient-to-br from-cyan-900 to-slate-950 p-6 flex flex-col justify-end relative">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Cartagena • El Mar Caribe</span>
+                            <h3 class="text-xl font-bold text-white">Playas de Bocagrande & Zona Norte</h3>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Disfrute del sol radiante, la brisa marina y las exclusivas costas de la Heroica con la tranquilidad de un transporte ejecutivo privado.
+                        </p>
+                        <div class="text-xs text-brand-gold font-semibold pt-2 border-t border-brand-border">Ideal para viajes de descanso o familiares.</div>
+                    </div>
+                </div>
+
+                <!-- Santa Marta: Bahía y Centro Histórico -->
+                <div class="glass-panel rounded-2xl overflow-hidden group hover:border-brand-gold/50 transition">
+                    <div class="h-48 bg-gradient-to-br from-emerald-900 to-slate-950 p-6 flex flex-col justify-end relative">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Santa Marta • Magia Natural</span>
+                            <h3 class="text-xl font-bold text-white">Bahía más linda de América</h3>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            La combinación perfecta entre la imponente Sierra Nevada y el mar Caribe. Conozca el centro histórico y sus mágicos rincones coloniales.
+                        </p>
+                        <div class="text-xs text-brand-gold font-semibold pt-2 border-t border-brand-border">Trayectos intermunicipales de alta comodidad.</div>
+                    </div>
+                </div>
+
+                <!-- Santa Marta: Tayrona y Alrededores -->
+                <div class="glass-panel rounded-2xl overflow-hidden group hover:border-brand-gold/50 transition">
+                    <div class="h-48 bg-gradient-to-br from-teal-900 to-slate-950 p-6 flex flex-col justify-end relative">
+                        <div class="absolute inset-0 bg-black/30"></div>
+                        <div class="relative z-10">
+                            <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Santa Marta • Ecoturismo</span>
+                            <h3 class="text-xl font-bold text-white">Parque Tayrona & Playas Cristalinas</h3>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Acceso a los parajes naturales más hermosos del Magdalena con la seguridad, espacio y confort óptimo que ofrece nuestra camioneta.
+                        </p>
+                        <div class="text-xs text-brand-gold font-semibold pt-2 border-t border-brand-border">Servicio personalizado a su medida.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cotizador / Formulario Interactivo -->
+    <section id="cotizador" class="py-24 hero-gradient relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="glass-panel rounded-3xl p-8 sm:p-12 shadow-2xl border border-brand-gold/30">
+                <div class="text-center space-y-3 mb-10">
+                    <h2 class="text-3xl font-extrabold text-white">Reserva tu Servicio</h2>
+                    <p class="text-slate-300 text-sm">Indícanos los detalles y te atenderemos de inmediato mediante WhatsApp con una cotización formal y elegante.</p>
+                </div>
+
+                <form id="reservaForm" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Nombre del Solicitante</label>
+                            <input type="text" id="nombre" required placeholder="Ej. Geovanny Solar" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Tipo de Servicio</label>
+                            <select id="tipoServicio" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm">
+                                <option>Traslado Aeropuerto - Aeropuerto</option>
+                                <option>City Tour Especializado</option>
+                                <option>Servicio Empresarial</option>
+                                <option>Servicio Particular / Trayecto</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Ciudad u Origen</label>
+                            <input type="text" id="origen" required placeholder="Ej. Aeropuerto Barranquilla" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Destino</label>
+                            <input type="text" id="destino" required placeholder="Ej. Cartagena de Indias" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Fecha del Servicio</label>
+                            <input type="date" id="fecha" required class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Hora Estimada</label>
+                            <input type="time" id="hora" required class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Método de Pago Preferido</label>
+                            <select id="pago" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm">
+                                <option>Efectivo</option>
+                                <option>Transferencia Bancaria</option>
+                                <option>Tarjeta vía Datáfono (+6.1%)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Observaciones / Pasajeros / Maletas</label>
+                        <textarea id="observaciones" rows="3" placeholder="Ej. 2 pasajeros, 3 maletas. Asesor: Geovanny Solar Niño" class="w-full bg-brand-dark border border-brand-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-brand-gold transition text-sm"></textarea>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="button" onclick="enviarWhatsApp()" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-center shadow-xl shadow-emerald-900/30 transition flex items-center justify-center space-x-2">
+                            <i data-lucide="send" class="w-5 h-5"></i>
+                            <span>Enviar Solicitud Formal a WhatsApp</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark border-t border-brand-border/50 py-12 text-center text-slate-500 text-sm">
+        <div class="max-w-7xl mx-auto px-4 space-y-4">
+            <div class="flex items-center justify-center space-x-2">
+                <div class="w-8 h-8 rounded-lg bg-brand-gold flex items-center justify-center text-black font-bold">SV</div>
+                <span class="text-white font-bold tracking-wider">SOLAR VIP TRANSPORTE EJECUTIVO</span>
+            </div>
+            <p class="text-xs">"La humildad es una virtud maravillosa" • Cobertura total en la Costa Caribe.</p>
+            <p class="text-[11px] text-slate-600">Tel. 310-571-3949 • Barranquilla, Colombia</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function enviarWhatsApp() {
+            const nombre = document.getElementById('nombre').value || 'Estimado Cliente';
+            const tipo = document.getElementById('tipoServicio').value;
+            const origen = document.getElementById('origen').value || 'No especificado';
+            const destino = document.getElementById('destino').value || 'No especificado';
+            const fecha = document.getElementById('fecha').value || 'Por definir';
+            const hora = document.getElementById('hora').value || 'Por definir';
+            const pago = document.getElementById('pago').value;
+            const obs = document.getElementById('observaciones').value || 'Ninguna';
+
+            const mensaje = `👑 *SOLAR VIP - COTIZACIÓN DE SERVICIO* 👑\n\n` +
+                `Estimado equipo de *Solar VIP*, he generado una solicitud desde la plataforma digital:\n\n` +
+                `👤 *Solicitante:* ${nombre}\n` +
+                `🚗 *Tipo de Servicio:* ${tipo}\n` +
+                `📍 *Ruta:* ${origen} ➔ ${destino}\n` +
+                `📅 *Fecha:* ${fecha}\n` +
+                `⏰ *Hora:* ${hora}\n` +
+                `💳 *Método de Pago:* ${pago}\n` +
+                `📝 *Observaciones:* ${obs}\n\n` +
+                `Quedo atento a la confirmación de disponibilidad y asignación de nuestra Renault Duster Iconic 2026. ¡Muchas gracias!`;
+
+            const numeroWhatsApp = "573105713949";
+            const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
